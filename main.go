@@ -140,6 +140,33 @@ func deleteStudentController(c *gin.Context) {
 	})
 
 }
+
+func getStudentsByIdController(c *gin.Context) {
+	var student Student
+	studentId, err := strconv.Atoi(c.Params.ByName("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "ID invalido",
+		})
+		return
+	}
+
+	for _, stdu := range Students {
+		if studentId == stdu.ID {
+			student = stdu
+		}
+	}
+
+	if student.ID == 0 {
+		c.JSON(http.StatusNotFound, gin.H{
+			"message": "Estudante não encontrado",
+		})
+
+		return
+	}
+
+	c.JSON(http.StatusOK, student)
+}
 func main() {
 	service := gin.Default()
 
@@ -157,6 +184,7 @@ func getRoutes(c *gin.Engine) *gin.Engine {
 	groupStudents.POST("/", createStudentController)
 	groupStudents.PUT("/:id", updateStudentController)
 	groupStudents.DELETE("/:id", deleteStudentController)
+	groupStudents.GET("/:id", getStudentsByIdController)
 
 	return c
 }
