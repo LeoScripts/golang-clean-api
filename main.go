@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -27,11 +28,11 @@ func heartController(c *gin.Context) {
 	c.Done()
 }
 
-func GetStudentsController(c *gin.Context) {
+func getStudentsController(c *gin.Context) {
 	c.JSON(http.StatusOK, Students)
 }
 
-func CreateStudentController(c *gin.Context) {
+func createStudentController(c *gin.Context) {
 	var student Student
 	if err := c.Bind(&student); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -44,6 +45,58 @@ func CreateStudentController(c *gin.Context) {
 	Students = append(Students, student)
 
 	c.JSON(http.StatusCreated, student)
+}
+
+func updateStudentController(c *gin.Context) {
+	var student Student
+	var studentTemp Student
+	var newStudents []Student
+	// params := c.Params //pega todos os paramentros
+
+	// id := c.Params.ByName("id") //pega um paramentro id
+	// studentID, err := strconv.Atoi(id)
+
+	studentID, err := strconv.Atoi(c.Params.ByName("id")) //melhora a performace (pois reduzo a qtd de variaveis)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Erro id invalido",
+		})
+		return
+	}
+
+	if err = c.Bind(&student); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Erro Payload vazio! por favor enviar os dados corretamente",
+		})
+	}
+
+	for _, sdt := range Students {
+		if sdt.ID == studentID {
+			studentTemp = sdt
+		}
+	}
+
+	if studentTemp.ID == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "id nao encotrado",
+		})
+		return
+	}
+
+	studentTemp.FullName = student.FullName
+	studentTemp.Age = student.Age
+
+	for _, stud := range Students {
+		if studentID == stud.ID {
+			newStudents = append(newStudents, studentTemp)
+		} else {
+			newStudents = append(newStudents, stud)
+		}
+	}
+
+	Students = newStudents
+
+	c.JSON(http.StatusOK, studentTemp)
 }
 
 func main() {
@@ -59,8 +112,9 @@ func getRoutes(c *gin.Engine) *gin.Engine {
 	c.GET("/heart", heartController)
 
 	groupStudents := c.Group("/students")
-	groupStudents.GET("/", GetStudentsController)
-	groupStudents.POST("/", CreateStudentController)
+	groupStudents.GET("/", getStudentsController)
+	groupStudents.POST("/", createStudentController)
+	groupStudents.PUT("/:id", updateStudentController)
 
 	return c
 }
