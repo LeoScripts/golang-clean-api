@@ -95,10 +95,51 @@ func updateStudentController(c *gin.Context) {
 	}
 
 	Students = newStudents
-
-	c.JSON(http.StatusOK, studentTemp)
+	// geralmento so se retorna uma msg dizendo que foi atualizado
+	c.JSON(http.StatusOK, studentTemp) // estamos mostrando o studante , mas isso nao e necessario
 }
 
+func deleteStudentController(c *gin.Context) {
+	var student Student
+	var newStudents []Student
+
+	studentID, err := strconv.Atoi(c.Params.ByName("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "ERRO id invalido",
+		})
+		return
+	}
+
+	// pegar o studante selecionado
+	for _, stdu := range Students {
+		if studentID == stdu.ID {
+			student = stdu
+		}
+	}
+
+	if student.ID == 0 {
+		c.JSON(http.StatusNotFound, gin.H{
+			"message": "estudante não encontrado",
+		})
+		return
+	}
+
+	for _, stdu := range Students {
+		if stdu.ID != studentID {
+			newStudents = append(newStudents, stdu)
+		}
+	}
+
+	Students = newStudents
+
+	// retornar o item removomido
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Estudante removido com sucesso",
+		"student": student, // so pra testes
+	})
+
+}
 func main() {
 	service := gin.Default()
 
@@ -115,6 +156,7 @@ func getRoutes(c *gin.Engine) *gin.Engine {
 	groupStudents.GET("/", getStudentsController)
 	groupStudents.POST("/", createStudentController)
 	groupStudents.PUT("/:id", updateStudentController)
+	groupStudents.DELETE("/:id", deleteStudentController)
 
 	return c
 }
