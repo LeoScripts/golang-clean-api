@@ -27,8 +27,23 @@ func heartController(c *gin.Context) {
 	c.Done()
 }
 
-func routeGetStudents(c *gin.Context) {
+func GetStudentsController(c *gin.Context) {
 	c.JSON(http.StatusOK, Students)
+}
+
+func CreateStudentController(c *gin.Context) {
+	var student Student
+	if err := c.Bind(&student); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Erro Payload vazio! por favor enviar os dados corretamente",
+		})
+		return
+	}
+	// student.ID = len(Students) + 1 //funciona mais nao e bom
+	student.ID = Students[len(Students)-1].ID + 1 // a melhor opção seria deixar pro banco fazer isso
+	Students = append(Students, student)
+
+	c.JSON(http.StatusCreated, student)
 }
 
 func main() {
@@ -44,6 +59,8 @@ func getRoutes(c *gin.Engine) *gin.Engine {
 	c.GET("/heart", heartController)
 
 	groupStudents := c.Group("/students")
-	groupStudents.GET("/", routeGetStudents)
+	groupStudents.GET("/", GetStudentsController)
+	groupStudents.POST("/", CreateStudentController)
+
 	return c
 }
