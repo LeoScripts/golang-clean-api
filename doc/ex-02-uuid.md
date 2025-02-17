@@ -1,3 +1,38 @@
+# exemplo 02 usando o uuid
+
+- shared/id.go
+```golang
+package shared
+
+import (
+	"log"
+
+	"github.com/google/uuid"
+)
+
+// cria um uuid
+func GetUuid() uuid.UUID {
+	uuid, err := uuid.NewRandom()
+	if err != nil {
+		log.Fatal("Fatal error", err)
+	}
+	return uuid
+}
+
+// transforma a string que recebemos para uuid
+func GetUuidByStrings(s string) (uuid.UUID, error) {
+	return uuid.Parse(s)
+}
+
+// usando pra passar valores ids nulos ou zeros
+func GetUuidEmpty() uuid.UUID {
+	return uuid.Nil
+}
+
+```
+
+- main.go
+```golang
 package main
 
 import (
@@ -191,3 +226,5 @@ func getRoutes(c *gin.Engine) *gin.Engine {
 
 	return c
 }
+
+```
