@@ -109,12 +109,12 @@ var StudentsMock = []Student{
 	Student{shared.GetUuid(), "Carlos", 28},
 }
 ```
-- em seguida fui removendo as funções controller para arquivos separando  dentor de `api/controller/students/NOME_DA_FUNÇÃO.go`, 
+- em seguida fui movendo as funções controller para arquivos separando  dentor de `api/controller/students/NOME_DA_FUNÇÃO.go`, 
 - atualizei as importações 
 - e movi as rotas para o arquivo `api/route.go`
 
 exemplo se a funcao de create coloquei em um arquivo create.go
 
-o fluxo aqui foi o mesmo que fiz no em `api/controller/infra/heart.go`
+o fluxo aqui foi o mesmo que fiz para `api/controller/infra/heart.go` esse aquivo representa nossa rota de index ou home, por essa razao ficou na pasta infra dentro de controllers
 
 ou seja para cada entidade crie uma pasta diferente
