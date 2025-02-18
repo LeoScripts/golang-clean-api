@@ -9,7 +9,6 @@ import (
 )
 
 func Delete(c *gin.Context) {
-	var student entities.Student
 	var newStudents []entities.Student
 
 	id := c.Params.ByName("id")
@@ -17,20 +16,6 @@ func Delete(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "ERRO id invalido",
-		})
-		return
-	}
-
-	// pegar o studante selecionado
-	for _, stdu := range entities.StudentsMock {
-		if studentID == stdu.ID {
-			student = stdu
-		}
-	}
-
-	if student.ID == shared.GetUuidEmpty() {
-		c.JSON(http.StatusNotFound, gin.H{
-			"message": "estudante não encontrado",
 		})
 		return
 	}
@@ -43,10 +28,8 @@ func Delete(c *gin.Context) {
 
 	entities.StudentsMock = newStudents
 
-	// retornar o item removomido
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Estudante removido com sucesso",
-		"student": student, // so pra testes
 	})
 
 }
