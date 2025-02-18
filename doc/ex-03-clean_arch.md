@@ -118,3 +118,119 @@ exemplo se a funcao de create coloquei em um arquivo create.go
 o fluxo aqui foi o mesmo que fiz para `api/controller/infra/heart.go` esse aquivo representa nossa rota de index ou home, por essa razao ficou na pasta infra dentro de controllers
 
 ou seja para cada entidade crie uma pasta diferente
+
+
+## colocando o DTO
+
+estarei exibindo apenas 1 exemplo, ou seja faça nos outros que necessitarem tambem
+
+a sigla DTO siguinifica "Data transfer object" = objeto de transferencia de dados
+é aqui que dizemos quais dados viram e tambem validamos esses dados
+
+- criei o DTO dentro de `api/controller/students/dto.go`
+```golang
+package students
+
+type InputStudentDTO struct {
+	FullName string `json:"full_name"`
+	Age int `json:"age"`
+}
+```
+
+os metodos que vao receber essa validação sao os que recebem dados externos como por exemplo o create e o update gerealmete
+
+
+```golang
+func Create(c *gin.Context) {
+	var input InputStudentDto //estou aplicando aqui
+	if err := c.Bind(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Erro Payload vazio! por favor enviar os dados corretamente",
+		})
+		return
+	}
+
+	student := entities.NewStudent(input.FullName, input.Age)
+	entities.StudentsMock = append(entities.StudentsMock, *student)
+
+	c.JSON(http.StatusCreated, student)
+}
+```
+
+## adicioando Usecase(casos de uso)
+nossa regra de negocio
+
+estou mostrando somente um exemplo aqui continui a implemtação nos demais metodos
+
+- criar dentro de `usecases/student/search.go`
+
+obsever que dentro desse aquivo temos as regras trazida do controller `details.go`
+
+```golang
+package student
+
+import (
+	"errors"
+	"golang-student-01/entities"
+	"golang-student-01/entities/shared"
+
+	"github.com/google/uuid"
+)
+
+func SearchById(id uuid.UUID) (student entities.Student, err error) {
+
+	// regra: se o id recebido for igual a algum dentro do banco
+	for _, stdu := range entities.StudentsMock {
+		if id == stdu.ID {
+			student = stdu
+		}
+	}
+
+	// regra: se o o id so estudante encotrado for igual a 000000000000
+	if student.ID == shared.GetUuidEmpty() {
+		return student, errors.New("Estudante não encontrado")
+	}
+
+	return student, err
+}
+```
+
+- em `api/controller/students/details.go`
+
+```golang
+package students
+
+import (
+	"golang-student-01/entities"
+	"golang-student-01/entities/shared"
+	"net/http"
+
+	student_usecase "golang-student-01/usecases/student"
+
+	"github.com/gin-gonic/gin"
+)
+
+func Details(c *gin.Context) {
+	var studentFound entities.Student
+	id := c.Params.ByName("id")
+	studentId, err := shared.GetUuidByStrings(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "ID invalido",
+		})
+		return
+	}
+
+	// abistraimos para nossas regras para a camanda de usecases e ficou assim
+	studentFound, err = student_usecase.SearchById(studentId)
+	if err != nil {
+		// vou abstrair isso em breve mas por enquanto vai ficar assim mesmo
+		c.JSON(http.StatusNotFound, gin.H{
+			"message": err.Error(), // a execução desse erro nos traz a msg que passamos dentro do usecase
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, studentFound)
+}
+```

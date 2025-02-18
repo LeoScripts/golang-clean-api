@@ -5,11 +5,13 @@ import (
 	"golang-student-01/entities/shared"
 	"net/http"
 
+	student_usecase "golang-student-01/usecases/student"
+
 	"github.com/gin-gonic/gin"
 )
 
 func Details(c *gin.Context) {
-	var student entities.Student
+	var studentFound entities.Student
 	id := c.Params.ByName("id")
 	studentId, err := shared.GetUuidByStrings(id)
 	if err != nil {
@@ -19,19 +21,13 @@ func Details(c *gin.Context) {
 		return
 	}
 
-	for _, stdu := range entities.StudentsMock {
-		if studentId == stdu.ID {
-			student = stdu
-		}
-	}
-
-	if student.ID == shared.GetUuidEmpty() {
+	studentFound, err = student_usecase.SearchById(studentId)
+	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
-			"message": "Estudante não encontrado",
+			"message": err.Error(),
 		})
-
 		return
 	}
 
-	c.JSON(http.StatusOK, student)
+	c.JSON(http.StatusOK, studentFound)
 }
