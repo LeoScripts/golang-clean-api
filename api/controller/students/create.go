@@ -1,7 +1,7 @@
 package students
 
 import (
-	"golang-student-01/entities"
+	student_usecase "golang-student-01/usecases/student"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -16,8 +16,11 @@ func Create(c *gin.Context) {
 		return
 	}
 
-	student := entities.NewStudent(input.FullName, input.Age)
-	entities.StudentsMock = append(entities.StudentsMock, *student)
+	student, err := student_usecase.Create(input.FullName, input.Age)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err)
+		return
+	}
 
 	c.JSON(http.StatusCreated, student)
 }

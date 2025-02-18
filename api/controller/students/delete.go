@@ -20,6 +20,7 @@ func Delete(c *gin.Context) {
 
 	// regra de negocio
 	if err = student_usecase.Delete(studentID); err != nil {
+
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Erro ao remover usuario, por favor tente mais tarde",
 		})
