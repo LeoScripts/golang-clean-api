@@ -160,6 +160,9 @@ func Create(c *gin.Context) {
 ## adicioando Usecase(casos de uso)
 nossa regra de negocio
 
+⚠️⚠️⚠️ No clean arch nao podemos importar regras de outros arquivos que pertencem a outra implemtações mesmo que sejam iguais
+o correto e duplicar o codigo mesmo ⚠️⚠️⚠️⚠️
+
 estou mostrando somente um exemplo aqui continui a implemtação nos demais metodos
 
 - criar dentro de `usecases/student/search.go`

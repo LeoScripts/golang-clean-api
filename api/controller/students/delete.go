@@ -1,16 +1,14 @@
 package students
 
 import (
-	"golang-student-01/entities"
 	"golang-student-01/entities/shared"
+	student_usecase "golang-student-01/usecases/student"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 func Delete(c *gin.Context) {
-	var newStudents []entities.Student
-
 	id := c.Params.ByName("id")
 	studentID, err := shared.GetUuidByStrings(id)
 	if err != nil {
@@ -20,13 +18,14 @@ func Delete(c *gin.Context) {
 		return
 	}
 
-	for _, stdu := range entities.StudentsMock {
-		if stdu.ID != studentID {
-			newStudents = append(newStudents, stdu)
-		}
-	}
+	// regra de negocio
+	if err = student_usecase.Delete(studentID); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Erro ao remover usuario, por favor tente mais tarde",
+		})
 
-	entities.StudentsMock = newStudents
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Estudante removido com sucesso",
