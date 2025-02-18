@@ -1,8 +1,8 @@
 package students
 
 import (
-	"golang-student-01/entities"
 	"golang-student-01/entities/shared"
+	student_usecase "golang-student-01/usecases/student"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -10,8 +10,6 @@ import (
 
 func Update(c *gin.Context) {
 	var input InputStudentDto
-	var studentTemp entities.Student
-	var newStudents []entities.Student
 
 	id := c.Params.ByName("id")
 	studentID, err := shared.GetUuidByStrings(id)
@@ -28,30 +26,11 @@ func Update(c *gin.Context) {
 		})
 	}
 
-	for _, sdt := range entities.StudentsMock {
-		if sdt.ID == studentID {
-			studentTemp = sdt
-		}
-	}
-
-	if studentTemp.ID == shared.GetUuidEmpty() {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "id nao encotrado",
-		})
+	student, err := student_usecase.Update(studentID, input.FullName, input.Age)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	studentTemp.FullName = input.FullName
-	studentTemp.Age = input.Age
-
-	for _, stud := range entities.StudentsMock {
-		if studentID == stud.ID {
-			newStudents = append(newStudents, studentTemp)
-		} else {
-			newStudents = append(newStudents, stud)
-		}
-	}
-
-	entities.StudentsMock = newStudents
-	c.JSON(http.StatusOK, studentTemp)
+	c.JSON(http.StatusOK, student)
 }
