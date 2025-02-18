@@ -13,3 +13,9 @@ api com rotas de crud, search e index
 emplementando o uuid no exemplo 01
 
 [exemplo 02](./doc/ex-02-uuid.md)
+
+## ex 03 - aplicando o conceito de clean code (bem basico aqui)
+
+ simplismente pra ter uma noçao
+
+ [exemplo 03](doc/ex-03-clean_arch.md)
