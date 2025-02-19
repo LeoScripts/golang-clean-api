@@ -12,10 +12,10 @@ import (
 )
 
 type StudentController struct {
-	StudentUsecase *entities.StudentUsecaseContract
+	StudentUsecase *entities.Student
 }
 
-func NewStudentController(su *entities.StudentUsecaseContract) *StudentController {
+func NewStudentController(su *entities.Student) *StudentController {
 	return &StudentController{
 		StudentUsecase: su,
 	}

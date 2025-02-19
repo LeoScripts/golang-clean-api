@@ -332,3 +332,71 @@ func HeartController(c *gin.Context) {
 }
 
 ```
+
+## Refactor: movendo a logica dos controllers de student para um unico arquivo
+
+nesta atualização coloquei as implemtaçoes dentro de metodos em um unico arquivo
+
+criei um arquivo  `api/controller/students/controller.go` que é onde ficaram nossos metodos pra execução das acoes
+
+```golang
+package students
+
+import (
+	"golang-student-01/entities"
+)
+
+type StudentController struct {
+	StudentUsecase *entities.Student
+}
+
+func NewStudentController(su *entities.Student) *StudentController {
+	return &StudentController{
+		StudentUsecase: su,
+	}
+}
+```
+
+depois movi todas as implemetações para dentro de metodos dentro do arquivo controller(nesse caso de students) como no exemplo abaixo que tinha que eu monstro o antes e o depois
+
+- Antes <<<<<
+```golang
+package students
+
+import (
+	"net/http"
+
+	student_usecase "golang-student-01/usecases/student"
+
+	"github.com/gin-gonic/gin"
+)
+
+func List(c *gin.Context) {
+
+	/// logica movida ----------------------------------
+	students, err := student_usecase.List()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	c.JSON(http.StatusOK, students)
+	/// -----------------------------------------------
+
+}
+
+```
+
+pegue a logica ques esta marcada com comentario e coloquei no metodo List dentro de `api/controller/students/controller.go` dentro do metodo List
+
+```golang
+// .......codigo acima 
+
+func (sc *StudentController) List(ctx *gin.Context) {
+	students, err := student_usecase.List()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, err.Error())
+	}
+	ctx.JSON(http.StatusOK, students)
+}
+```
+
+e fui fazendo isso nas demais funçoes e removendo os arquivos que agora nao eram mais necessarios
