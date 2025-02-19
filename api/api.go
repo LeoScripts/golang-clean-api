@@ -1,14 +1,19 @@
 package api
 
-import "github.com/gin-gonic/gin"
+import (
+	"golang-student-01/api/controller/students"
+
+	"github.com/gin-gonic/gin"
+)
 
 type Service struct {
-	*gin.Engine
+	Engine            *gin.Engine
+	StudentController *students.StudentController
 }
 
 func NewService() *Service {
 	return &Service{
-		gin.Default(),
+		Engine: gin.Default(),
 	}
 }
 

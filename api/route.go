@@ -8,8 +8,8 @@ import (
 func (s *Service) GetRoutes() {
 	s.Engine.GET("/heart", heart.HeartController)
 
-	groupStudents := s.Group("/students")
-	groupStudents.GET("/", students.List)
+	groupStudents := s.Engine.Group("/students")
+	groupStudents.GET("/", s.StudentController.List)
 	groupStudents.POST("/", students.Create)
 	groupStudents.PUT("/:id", students.Update)
 	groupStudents.DELETE("/:id", students.Delete)
