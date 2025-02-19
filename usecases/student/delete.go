@@ -9,6 +9,8 @@ import (
 func Delete(id uuid.UUID) (err error) {
 	var newStudents []entities.Student
 
+	// coisas que poderiam estar aqui
+
 	//verificar se esse usario existe
 	// verificar outras questoes
 	// o ideal e aplicar softdelete

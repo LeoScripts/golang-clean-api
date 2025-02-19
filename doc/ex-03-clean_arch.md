@@ -237,3 +237,98 @@ func Details(c *gin.Context) {
 	c.JSON(http.StatusOK, studentFound)
 }
 ```
+
+## padronização do retorno
+
+padronizando a mensagem de retorno e com isso desacoplando ainda mais o codigo
+com a redução da dependencia do gin
+
+lembrando que esses sao apenas alguns exemplos, implentei isso em varios locais dessa aplicação
+
+- em `api/controller/response.go`
+```golang
+package controller
+
+type Response struct {
+	Message string `json:"message"`
+}
+
+type ResponseError struct {
+	Error string `json:"error"`
+}
+
+func NewResponseMessage(msg string) *Response {
+	return &Response{
+		Message: msg,
+	}
+}
+
+func NewResponseMessageError(msg string) *ResponseError {
+	return &ResponseError{
+		Error: msg,
+	}
+}
+```
+
+em seguida fomos implemtando ex: dentro de `api/controller/students/create.go`
+
+```golang
+package students
+
+import (
+	"net/http"
+
+	"golang-student-01/api/controller"
+	student_usecase "golang-student-01/usecases/student"
+
+	"github.com/gin-gonic/gin"
+)
+
+func Create(c *gin.Context) {
+	var input InputStudentDto
+	if err := c.Bind(&input); err != nil {
+
+		// antes 
+		// c.JSON(http.StatusBadRequest, gin.H{
+		// 	"message": "Erro Payload vazio! por favor enviar os dados corretamente",
+		// })
+
+		// agora
+		c.JSON(http.StatusBadRequest, controller.NewResponseMessageError("Erro Payload vazio! por favor enviar os dados corretamente"))
+		return
+	}
+
+	student, err := student_usecase.Create(input.FullName, input.Age)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err)
+		return
+	}
+
+	c.JSON(http.StatusCreated, student)
+}
+```
+
+outro exemplo de uso foi no heart `api/controller/infra/heart.go`
+
+```golang
+package heart
+
+import (
+	"net/http"
+
+	"golang-student-01/api/controller"
+
+	"github.com/gin-gonic/gin"
+)
+
+func HeartController(c *gin.Context) {
+	// antes
+	// c.JSON(http.StatusOK, gin.H{
+	// 	"message": "Deu bommmmmmmm",
+	// })
+
+	// agora
+	c.JSON(http.StatusOK, controller.NewResponseMessage("Deu bommmmmmmm"))
+}
+
+```

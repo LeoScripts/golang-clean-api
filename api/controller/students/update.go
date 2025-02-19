@@ -1,9 +1,11 @@
 package students
 
 import (
+	"net/http"
+
+	"golang-student-01/api/controller"
 	"golang-student-01/entities/shared"
 	student_usecase "golang-student-01/usecases/student"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -14,16 +16,12 @@ func Update(c *gin.Context) {
 	id := c.Params.ByName("id")
 	studentID, err := shared.GetUuidByStrings(id)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "Erro id invalido",
-		})
+		c.JSON(http.StatusBadRequest, controller.NewResponseMessageError("Erro id invalido"))
 		return
 	}
 
 	if err = c.Bind(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "Erro Payload vazio! por favor enviar os dados corretamente",
-		})
+		c.JSON(http.StatusBadRequest, controller.NewResponseMessageError("Erro Payload vazio! por favor enviar os dados corretamente"))
 	}
 
 	student, err := student_usecase.Update(studentID, input.FullName, input.Age)

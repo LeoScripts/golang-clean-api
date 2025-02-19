@@ -1,8 +1,10 @@
 package students
 
 import (
-	student_usecase "golang-student-01/usecases/student"
 	"net/http"
+
+	"golang-student-01/api/controller"
+	student_usecase "golang-student-01/usecases/student"
 
 	"github.com/gin-gonic/gin"
 )
@@ -10,9 +12,7 @@ import (
 func Create(c *gin.Context) {
 	var input InputStudentDto
 	if err := c.Bind(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "Erro Payload vazio! por favor enviar os dados corretamente",
-		})
+		c.JSON(http.StatusBadRequest, controller.NewResponseMessageError("Erro Payload vazio! por favor enviar os dados corretamente"))
 		return
 	}
 
