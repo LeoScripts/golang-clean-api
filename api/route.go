@@ -2,7 +2,6 @@ package api
 
 import (
 	heart "golang-student-01/api/controller/infra"
-	"golang-student-01/api/controller/students"
 )
 
 func (s *Service) GetRoutes() {
@@ -13,5 +12,5 @@ func (s *Service) GetRoutes() {
 	groupStudents.POST("/", s.StudentController.Create)
 	groupStudents.PUT("/:id", s.StudentController.Update)
 	groupStudents.DELETE("/:id", s.StudentController.Delete)
-	groupStudents.GET("/:id", students.Details)
+	groupStudents.GET("/:id", s.StudentController.Details)
 }

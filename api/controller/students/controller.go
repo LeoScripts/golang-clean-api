@@ -83,3 +83,21 @@ func (sc *StudentController) Delete(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, controller.NewResponseMessage("Estudante removido com sucesso"))
 }
+
+func (sc *StudentController) Details(ctx *gin.Context) {
+	var studentFound entities.Student
+	id := ctx.Params.ByName("id")
+	studentId, err := shared.GetUuidByStrings(id)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, controller.NewResponseMessageError("ID invalido"))
+		return
+	}
+
+	studentFound, err = student_usecase.SearchById(studentId)
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, controller.NewResponseMessageError(err.Error()))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, studentFound)
+}
