@@ -30,9 +30,9 @@ func (sc *StudentController) List(ctx *gin.Context) {
 }
 
 func (sc *StudentController) Create(ctx *gin.Context) {
-	var input InputStudentDto
-	if err := ctx.Bind(&input); err != nil {
-		ctx.JSON(http.StatusBadRequest, controller.NewResponseMessageError("Erro Payload vazio! por favor enviar os dados corretamente"))
+	input, err := getInputBody(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, controller.NewResponseMessageError(err.Error()))
 		return
 	}
 

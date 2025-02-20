@@ -400,3 +400,81 @@ func (sc *StudentController) List(ctx *gin.Context) {
 ```
 
 e fui fazendo isso nas demais funçoes e removendo os arquivos que agora nao eram mais necessarios
+
+## validando os campos 
+
+vou dar apenas alguns exemplos como base o restante e so olhar no codigo
+
+estarei usando o pacote `github.com/gookit/validate`
+baixe ai usando o `go get NOME_DO_PACOTE`
+
+- criar o arquivo `api/controller/students/validate.go`
+```golang
+package students
+
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/gookit/validate"
+)
+
+func getInputBody(ctx *gin.Context) (input InputStudentDto, err error) {
+	// agora os dados passam primeiro por aqui 
+	// depois eles seguem adiante na controller
+
+	err = ctx.Bind(&input) // fazendo o bind
+	if err != nil {
+		return input, err
+	}
+
+	// validação de dados
+	validation := validate.Struct(input)
+	if !validation.Validate() {
+		return input, validation.Errors
+	}
+
+	return input, err
+}
+```
+
+- coloque as vaidaçoes no DTO como abaixo
+```golang
+package students
+
+type InputStudentDto struct {
+	FullName string `json:"full_name" validate:"required|min_len:3|max_len:150|string"`
+	Age      int    `json:"age" validate:"required|int|min:3|max:80"`
+}
+```
+
+- implementa no controller `api/controller/students/controller.go`
+
+```golang
+func (sc *StudentController) Create(ctx *gin.Context) {
+	// Antes
+	// var input InputStudentDto
+	// if err := ctx.Bind(&input); err != nil {
+	// 	ctx.JSON(http.StatusBadRequest, controller.NewResponseMessageError("Erro Payload vazio! por favor enviar os dados corretamente"))
+	// 	return
+	// }
+
+	// Depois -----------------------
+	input, err := getInputBody(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, controller.NewResponseMessageError(err.Error()))
+		return
+	}
+	// ------------------------------
+
+	// o restante continua do mesmo jeito
+	student, err := student_usecase.Create(input.FullName, input.Age)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, err)
+		return
+	}
+
+	ctx.JSON(http.StatusCreated, student)
+}
+```
+
+
+
