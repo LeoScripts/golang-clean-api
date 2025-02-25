@@ -79,8 +79,8 @@ func (sc *StudentController) Update(ctx *gin.Context) {
 }
 
 func (sc *StudentController) Delete(ctx *gin.Context) {
-	id := ctx.Params.ByName("id")
-	studentID, err := shared.GetUuidByStrings(id)
+
+	studentID, err := getInputId(ctx)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, controller.NewResponseMessageError("ERRO id invalido"))
 		return
