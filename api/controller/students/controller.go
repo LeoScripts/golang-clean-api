@@ -52,17 +52,16 @@ func (sc *StudentController) Create(ctx *gin.Context) {
 }
 
 func (sc *StudentController) Update(ctx *gin.Context) {
-	var input InputStudentDto
 
-	id := ctx.Params.ByName("id")
-	studentID, err := shared.GetUuidByStrings(id)
+	studentID, err := getInputId(ctx)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, controller.NewResponseMessageError("Erro id invalido"))
 		return
 	}
-
-	if err = ctx.Bind(&input); err != nil {
-		ctx.JSON(http.StatusBadRequest, controller.NewResponseMessageError("Erro Payload vazio! por favor enviar os dados corretamente"))
+	input, err := getInputBody(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, controller.NewResponseMessageError(err.Error()))
+		return
 	}
 
 	student, err := student_usecase.Update(studentID, input.FullName, input.Age)
@@ -71,7 +70,12 @@ func (sc *StudentController) Update(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, student)
+	output, err := getOutputStudent(student)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, controller.NewResponseMessageError(err.Error()))
+	}
+
+	ctx.JSON(http.StatusOK, output)
 }
 
 func (sc *StudentController) Delete(ctx *gin.Context) {

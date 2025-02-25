@@ -2,8 +2,10 @@ package students
 
 import (
 	"golang-student-01/entities"
+	"golang-student-01/entities/shared"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/gookit/validate"
 )
 
@@ -38,4 +40,13 @@ func getOutputStudent(student entities.Student) (output OutputStudentDto, err er
 		FullName: student.FullName,
 		Age:      student.Age,
 	}, err
+}
+
+func getInputId(ctx *gin.Context) (id uuid.UUID, err error) {
+	inputId := ctx.Params.ByName("id")
+	id, err = shared.GetUuidByStrings(inputId)
+	if err != nil {
+		return id, err
+	}
+	return id, err
 }
