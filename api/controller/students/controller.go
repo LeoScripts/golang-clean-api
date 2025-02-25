@@ -5,7 +5,6 @@ import (
 
 	"golang-student-01/api/controller"
 	"golang-student-01/entities"
-	"golang-student-01/entities/shared"
 	student_usecase "golang-student-01/usecases/student"
 
 	"github.com/gin-gonic/gin"
@@ -96,8 +95,7 @@ func (sc *StudentController) Delete(ctx *gin.Context) {
 
 func (sc *StudentController) Details(ctx *gin.Context) {
 	var studentFound entities.Student
-	id := ctx.Params.ByName("id")
-	studentId, err := shared.GetUuidByStrings(id)
+	studentId, err := getInputId(ctx)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, controller.NewResponseMessageError("ID invalido"))
 		return
@@ -109,5 +107,10 @@ func (sc *StudentController) Details(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, studentFound)
+	output, err := getOutputStudent(studentFound)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, controller.NewResponseMessageError(err.Error()))
+	}
+
+	ctx.JSON(http.StatusOK, output)
 }
