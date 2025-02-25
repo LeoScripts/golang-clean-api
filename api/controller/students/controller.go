@@ -26,7 +26,13 @@ func (sc *StudentController) List(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, err.Error())
 	}
-	ctx.JSON(http.StatusOK, students)
+
+	output, err := getOutputListStudents(students)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	ctx.JSON(http.StatusOK, output)
 }
 
 func (sc *StudentController) Create(ctx *gin.Context) {

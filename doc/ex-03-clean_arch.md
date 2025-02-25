@@ -476,5 +476,69 @@ func (sc *StudentController) Create(ctx *gin.Context) {
 }
 ```
 
+###### neste outro exemplo vamos controlar a saida de dados
 
+1. criamos nossa estrutura(struct) no DTO `api/controller/students/dto.go`
+```golang
+package students
+
+type InputStudentDto struct {
+//............... codigo 
+}
+
+// nossa nova estrutura(de saida)
+// aqui controlamos  o que vai ser entregue ao usuario
+// garantimos mais segurança e e passamos somente o que é preciso
+type OutputStudentDto struct { //pra returno de um
+	ID       uuid.UUID `json:"id"`
+	FullName string `json:"full_name"`
+	Age      int    `json:"age" `
+}
+
+type OutputStudentsDto struct { // pra retorno de varios
+	Students []OutputStudentDto `json:"students"`
+}
+
+```
+
+2. em `api/controller/students/validate.go`
+
+```golang
+
+//condigo anterior(acima) ............
+
+// ex: 01 do list
+// func getOutputListStudents(students []entities.Student) (output OutputStudentsDto, err error) {
+// 	for _, s := range students {
+// 		output.Students = append(output.Students, OutputStudentDto{
+// 			ID:       s.ID,
+// 			FullName: s.FullName,
+// 			Age:      s.Age,
+// 		})
+// 	}
+// 	return output, err
+// }
+
+// ex: 02 do list
+func getOutputListStudents(students []entities.Student) (output OutputStudentsDto, err error) {
+	for _, s := range students {
+		outputStudent, err := getOutputStudent(s)
+		if err != nil {
+			return output, err
+		}
+		output.Students = append(output.Students, outputStudent)
+	}
+	return output, err
+}
+
+func getOutputStudent(student entities.Student) (output OutputStudentDto, err error) {
+	return OutputStudentDto{
+		ID:       student.ID,
+		FullName: student.FullName,
+		Age:      student.Age,
+	}, err
+}
+
+```
+observe que no validate ja temos duas possibilidades de saida no caso de (1 item e de varios items, nesse caso de estudantes)
 
