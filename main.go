@@ -2,10 +2,19 @@ package main
 
 import (
 	"golang-student-01/api"
+	"golang-student-01/infra/database"
+	"golang-student-01/infra/database/memory"
+	"golang-student-01/infra/database/repository"
 )
 
 func main() {
-	service := api.NewService()
-
+	db := GetDatabase()
+	service := api.NewService(db)
 	service.Start()
+}
+
+func GetDatabase() *database.Database {
+	db := memory.GetConnection()
+	studentRepository := repository.NewStudentRepository()
+	return database.NewDatabase(db, studentRepository)
 }

@@ -20,10 +20,6 @@ func NewStudent(fullName string, age int) *Student {
 	}
 }
 
-// mock
-var StudentsMock = []Student{
-	// substituimos o id pelo uuid
-	Student{shared.GetUuid(), "Alex", 38},
-	Student{shared.GetUuid(), "Bia", 32},
-	Student{shared.GetUuid(), "Carlos", 28},
+type StudentRespository interface {
+	List() []Student
 }
