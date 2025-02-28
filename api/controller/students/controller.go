@@ -30,6 +30,28 @@ func (sc *StudentController) List(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, output)
 }
 
+func (sc *StudentController) Details(ctx *gin.Context) {
+	var studentFound entities.Student
+	studentId, err := getInputId(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, controller.NewResponseMessageError("ID invalido"))
+		return
+	}
+
+	studentFound, err = sc.StudentUsecase.SearchById(studentId)
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, controller.NewResponseMessageError(err.Error()))
+		return
+	}
+
+	output, err := getOutputStudent(studentFound)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, controller.NewResponseMessageError(err.Error()))
+	}
+
+	ctx.JSON(http.StatusOK, output)
+}
+
 // func (sc *StudentController) Create(ctx *gin.Context) {
 // 	input, err := getInputBody(ctx)
 // 	if err != nil {
@@ -88,25 +110,3 @@ func (sc *StudentController) List(ctx *gin.Context) {
 
 // 	ctx.JSON(http.StatusOK, controller.NewResponseMessage("Estudante removido com sucesso"))
 // }
-
-func (sc *StudentController) Details(ctx *gin.Context) {
-	var studentFound entities.Student
-	studentId, err := getInputId(ctx)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, controller.NewResponseMessageError("ID invalido"))
-		return
-	}
-
-	studentFound, err = sc.StudentUsecase.SearchById(studentId)
-	if err != nil {
-		ctx.JSON(http.StatusNotFound, controller.NewResponseMessageError(err.Error()))
-		return
-	}
-
-	output, err := getOutputStudent(studentFound)
-	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, controller.NewResponseMessageError(err.Error()))
-	}
-
-	ctx.JSON(http.StatusOK, output)
-}

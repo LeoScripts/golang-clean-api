@@ -12,5 +12,5 @@ func (s *Service) GetRoutes() {
 	// groupStudents.POST("/", s.StudentController.Create)
 	// groupStudents.PUT("/:id", s.StudentController.Update)
 	// groupStudents.DELETE("/:id", s.StudentController.Delete)
-	// groupStudents.GET("/:id", s.StudentController.Details)
+	groupStudents.GET("/:id", s.StudentController.Details)
 }
