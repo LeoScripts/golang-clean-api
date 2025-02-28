@@ -21,6 +21,7 @@ func NewStudent(fullName string, age int) *Student {
 }
 
 type StudentRespository interface {
-	List() []Student
-	SearchByID(id uuid.UUID) (Student, error)
+	List() []*Student
+	SearchByID(id uuid.UUID) (*Student, error)
+	Create(student *Student) error
 }

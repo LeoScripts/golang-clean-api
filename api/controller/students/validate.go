@@ -23,7 +23,7 @@ func getInputBody(ctx *gin.Context) (input InputStudentDto, err error) {
 	return input, err
 }
 
-func getOutputListStudents(students []entities.Student) (output OutputStudentsDto, err error) {
+func getOutputListStudents(students []*entities.Student) (output OutputStudentsDto, err error) {
 	for _, s := range students {
 		outputStudent, err := getOutputStudent(s)
 		if err != nil {
@@ -34,7 +34,7 @@ func getOutputListStudents(students []entities.Student) (output OutputStudentsDt
 	return output, err
 }
 
-func getOutputStudent(student entities.Student) (output OutputStudentDto, err error) {
+func getOutputStudent(student *entities.Student) (output OutputStudentDto, err error) {
 	return OutputStudentDto{
 		ID:       student.ID,
 		FullName: student.FullName,

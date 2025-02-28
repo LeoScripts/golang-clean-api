@@ -5,11 +5,11 @@ import (
 )
 
 type Database struct {
-	Conn              []entities.Student
+	Conn              []*entities.Student
 	StudentRepository entities.StudentRespository
 }
 
-func NewDatabase(conn []entities.Student, sr entities.StudentRespository) *Database {
+func NewDatabase(conn []*entities.Student, sr entities.StudentRespository) *Database {
 	return &Database{
 		Conn:              conn,
 		StudentRepository: sr,

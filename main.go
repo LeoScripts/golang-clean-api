@@ -14,7 +14,7 @@ func main() {
 }
 
 func GetDatabase() *database.Database {
-	db := memory.GetConnection()
+	db := memory.StudentsMemory
 	studentRepository := repository.NewStudentRepository()
 	return database.NewDatabase(db, studentRepository)
 }

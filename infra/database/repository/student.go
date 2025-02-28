@@ -2,7 +2,6 @@ package repository
 
 import (
 	"errors"
-	"fmt"
 	"golang-student-01/entities"
 	"golang-student-01/entities/shared"
 	"golang-student-01/infra/database/memory"
@@ -20,25 +19,26 @@ func NewStudentRepository() *StudentRepository {
 	}
 }
 
-func (sr *StudentRepository) List() []entities.Student {
-	students := memory.GetConnection()
+func (sr *StudentRepository) List() []*entities.Student {
+	students := memory.StudentsMemory
 	return students
 }
 
-func (sr *StudentRepository) SearchByID(id uuid.UUID) (student entities.Student, err error) {
-	students := memory.GetConnection()
-
+func (sr *StudentRepository) SearchByID(id uuid.UUID) (student *entities.Student, err error) {
+	students := memory.StudentsMemory
 	for _, stdu := range students {
-		fmt.Println(stdu)
 		if stdu.ID == id {
 			student = stdu
 		}
 	}
-
-	fmt.Println(student.ID)
 	if student.ID == shared.GetUuidEmpty() {
 		return student, errors.New("Estudante não encontrado aaaaaaaaaaa")
 	}
-
 	return student, err
+}
+
+func (sr *StudentRepository) Create(student *entities.Student) (err error) {
+	students := memory.StudentsMemory
+	students = append(students, student)
+	return err
 }

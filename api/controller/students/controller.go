@@ -31,7 +31,7 @@ func (sc *StudentController) List(ctx *gin.Context) {
 }
 
 func (sc *StudentController) Details(ctx *gin.Context) {
-	var studentFound entities.Student
+	var studentFound *entities.Student
 	studentId, err := getInputId(ctx)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, controller.NewResponseMessageError("ID invalido"))
@@ -52,21 +52,21 @@ func (sc *StudentController) Details(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, output)
 }
 
-// func (sc *StudentController) Create(ctx *gin.Context) {
-// 	input, err := getInputBody(ctx)
-// 	if err != nil {
-// 		ctx.JSON(http.StatusBadRequest, controller.NewResponseMessageError(err.Error()))
-// 		return
-// 	}
+func (sc *StudentController) Create(ctx *gin.Context) {
+	input, err := getInputBody(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, controller.NewResponseMessageError(err.Error()))
+		return
+	}
 
-// 	student, err := student_usecase.Create(input.FullName, input.Age)
-// 	if err != nil {
-// 		ctx.JSON(http.StatusInternalServerError, err)
-// 		return
-// 	}
+	student, err := sc.StudentUsecase.Create(input.FullName, input.Age)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, err)
+		return
+	}
 
-// 	ctx.JSON(http.StatusCreated, student)
-// }
+	ctx.JSON(http.StatusCreated, student)
+}
 
 // func (sc *StudentController) Update(ctx *gin.Context) {
 
