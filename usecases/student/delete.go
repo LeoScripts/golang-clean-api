@@ -1,23 +1,21 @@
 package student
 
 import (
+	"errors"
+
+	"golang-student-01/entities/shared"
+
 	"github.com/google/uuid"
 )
 
-func Delete(id uuid.UUID) (err error) {
-	// var newStudents []entities.Student
-
-	// coisas que poderiam estar aqui
-
-	//verificar se esse usario existe
-	// verificar outras questoes
-	// o ideal e aplicar softdelete
-
-	// for _, stdu := range entities.StudentsMock {
-	// 	if stdu.ID != id {
-	// 		newStudents = append(newStudents, stdu)
-	// 	}
-	// }
-	// entities.StudentsMock = newStudents
+func (su *StudentUsecase) Delete(id uuid.UUID) (err error) {
+	student, err := su.Database.StudentRepository.SearchByID(id)
+	if err != nil {
+		return err
+	}
+	if student.ID == shared.GetUuidEmpty() {
+		return errors.New("id nao encotrado")
+	}
+	su.Database.StudentRepository.Delete(id)
 	return err
 }

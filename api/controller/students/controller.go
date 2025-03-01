@@ -95,18 +95,18 @@ func (sc *StudentController) Update(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, output)
 }
 
-// func (sc *StudentController) Delete(ctx *gin.Context) {
+func (sc *StudentController) Delete(ctx *gin.Context) {
 
-// 	studentID, err := getInputId(ctx)
-// 	if err != nil {
-// 		ctx.JSON(http.StatusBadRequest, controller.NewResponseMessageError("ERRO id invalido"))
-// 		return
-// 	}
+	studentID, err := getInputId(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, controller.NewResponseMessageError("ERRO id invalido"))
+		return
+	}
 
-// 	if err = student_usecase.Delete(studentID); err != nil {
-// 		ctx.JSON(http.StatusInternalServerError, controller.NewResponseMessageError("Erro ao remover usuario, por favor tente mais tarde"))
-// 		return
-// 	}
+	if err = sc.StudentUsecase.Delete(studentID); err != nil {
+		ctx.JSON(http.StatusInternalServerError, controller.NewResponseMessageError("Erro ao remover usuario, por favor tente mais tarde"))
+		return
+	}
 
-// 	ctx.JSON(http.StatusOK, controller.NewResponseMessage("Estudante removido com sucesso"))
-// }
+	ctx.JSON(http.StatusOK, controller.NewResponseMessage("Estudante removido com sucesso"))
+}

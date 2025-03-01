@@ -14,6 +14,15 @@ var StudentsMemory = []*entities.Student{
 	&entities.Student{uuid.Must(uuid.Parse("3e35dc08-423b-4485-8783-8b374b1911f3")), "Carlos", 28},
 }
 
+func Find(id uuid.UUID) (student *entities.Student) {
+	for _, sdt := range StudentsMemory {
+		if sdt.ID == id {
+			student = sdt
+		}
+	}
+	return student
+}
+
 func CreatMemory(student *entities.Student) {
 	StudentsMemory = append(StudentsMemory, student)
 }
@@ -28,6 +37,16 @@ func UpdateMemory(student *entities.Student) {
 		} else {
 			// mantem os existentes
 			newStudents = append(newStudents, stud)
+		}
+	}
+	StudentsMemory = newStudents
+}
+
+func DeleteMemory(id uuid.UUID) {
+	var newStudents []*entities.Student
+	for _, stdu := range StudentsMemory {
+		if id != stdu.ID {
+			newStudents = append(newStudents, stdu)
 		}
 	}
 	StudentsMemory = newStudents

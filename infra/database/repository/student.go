@@ -44,3 +44,7 @@ func (sr *StudentRepository) Create(student *entities.Student) {
 func (sr *StudentRepository) Update(student *entities.Student) {
 	memory.UpdateMemory(student)
 }
+
+func (sr *StudentRepository) Delete(id uuid.UUID) {
+	memory.DeleteMemory(id)
+}

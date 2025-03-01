@@ -25,4 +25,5 @@ type StudentRespository interface {
 	SearchByID(id uuid.UUID) (*Student, error)
 	Create(student *Student)
 	Update(student *Student)
+	Delete(id uuid.UUID)
 }
