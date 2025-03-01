@@ -68,32 +68,32 @@ func (sc *StudentController) Create(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, student)
 }
 
-// func (sc *StudentController) Update(ctx *gin.Context) {
+func (sc *StudentController) Update(ctx *gin.Context) {
 
-// 	studentID, err := getInputId(ctx)
-// 	if err != nil {
-// 		ctx.JSON(http.StatusBadRequest, controller.NewResponseMessageError("Erro id invalido"))
-// 		return
-// 	}
-// 	input, err := getInputBody(ctx)
-// 	if err != nil {
-// 		ctx.JSON(http.StatusBadRequest, controller.NewResponseMessageError(err.Error()))
-// 		return
-// 	}
+	studentID, err := getInputId(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, controller.NewResponseMessageError("Erro id invalido"))
+		return
+	}
+	input, err := getInputBody(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, controller.NewResponseMessageError(err.Error()))
+		return
+	}
 
-// 	student, err := student_usecase.Update(studentID, input.FullName, input.Age)
-// 	if err != nil {
-// 		ctx.JSON(http.StatusBadRequest, err.Error())
-// 		return
-// 	}
+	student, err := sc.StudentUsecase.Update(studentID, input.FullName, input.Age)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
 
-// 	output, err := getOutputStudent(student)
-// 	if err != nil {
-// 		ctx.JSON(http.StatusInternalServerError, controller.NewResponseMessageError(err.Error()))
-// 	}
+	output, err := getOutputStudent(student)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, controller.NewResponseMessageError(err.Error()))
+	}
 
-// 	ctx.JSON(http.StatusOK, output)
-// }
+	ctx.JSON(http.StatusOK, output)
+}
 
 // func (sc *StudentController) Delete(ctx *gin.Context) {
 

@@ -37,8 +37,10 @@ func (sr *StudentRepository) SearchByID(id uuid.UUID) (student *entities.Student
 	return student, err
 }
 
-func (sr *StudentRepository) Create(student *entities.Student) (err error) {
-	students := memory.StudentsMemory
-	students = append(students, student)
-	return err
+func (sr *StudentRepository) Create(student *entities.Student) {
+	memory.CreatMemory(student)
+}
+
+func (sr *StudentRepository) Update(student *entities.Student) {
+	memory.UpdateMemory(student)
 }

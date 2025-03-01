@@ -1,34 +1,29 @@
 package student
 
 import (
+	"errors"
 	"golang-student-01/entities"
+	"golang-student-01/entities/shared"
+	"golang-student-01/infra/database/memory"
 
 	"github.com/google/uuid"
 )
 
-func Update(id uuid.UUID, fullname string, age int) (student entities.Student, err error) {
-	// var newStudents []entities.Student
+func (su *StudentUsecase) Update(id uuid.UUID, fullname string, age int) (student *entities.Student, err error) {
+	studentsMemory := memory.StudentsMemory
+	for _, sdt := range studentsMemory {
+		if sdt.ID == id {
+			student = sdt
+		}
+	}
+	if student.ID == shared.GetUuidEmpty() {
+		return student, errors.New("id nao encotrado")
+	}
 
-	// for _, sdt := range entities.StudentsMock {
-	// 	if sdt.ID == id {
-	// 		student = sdt
-	// 	}
-	// }
-	// if student.ID == shared.GetUuidEmpty() {
-	// 	return student, errors.New("id nao encotrado")
-	// }
+	student.FullName = fullname
+	student.Age = age
 
-	// student.FullName = fullname
-	// student.Age = age
+	su.Database.StudentRepository.Update(student)
 
-	// for _, stud := range entities.StudentsMock {
-	// 	if student.ID == stud.ID {
-	// 		newStudents = append(newStudents, student)
-	// 	} else {
-	// 		newStudents = append(newStudents, stud)
-	// 	}
-	// }
-
-	// entities.StudentsMock = newStudents
 	return student, err
 }
