@@ -14,7 +14,11 @@ var StudentsMemory = []*entities.Student{
 	&entities.Student{uuid.Must(uuid.Parse("3e35dc08-423b-4485-8783-8b374b1911f3")), "Carlos", 28},
 }
 
-func Find(id uuid.UUID) (student *entities.Student) {
+func FindAll() []*entities.Student {
+	return StudentsMemory
+}
+
+func FindOne(id uuid.UUID) (student *entities.Student) {
 	for _, sdt := range StudentsMemory {
 		if sdt.ID == id {
 			student = sdt
