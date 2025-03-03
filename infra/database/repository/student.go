@@ -1,9 +1,7 @@
 package repository
 
 import (
-	"errors"
 	"golang-student-01/entities"
-	"golang-student-01/entities/shared"
 	"golang-student-01/infra/database/memory"
 
 	"github.com/google/uuid"
@@ -23,17 +21,8 @@ func (sr *StudentRepository) List() []*entities.Student {
 	return memory.FindAll()
 }
 
-func (sr *StudentRepository) SearchByID(id uuid.UUID) (student *entities.Student, err error) {
-	students := memory.FindAll()
-	for _, stdu := range students {
-		if stdu.ID == id {
-			student = stdu
-		}
-	}
-	if student.ID == shared.GetUuidEmpty() {
-		return student, errors.New("Estudante não encontrado aaaaaaaaaaa")
-	}
-	return student, err
+func (sr *StudentRepository) SearchByID(id uuid.UUID) (student *entities.Student) {
+	return memory.FindOne(id)
 }
 
 func (sr *StudentRepository) Create(student *entities.Student) {
