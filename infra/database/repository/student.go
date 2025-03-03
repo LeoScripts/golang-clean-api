@@ -21,7 +21,7 @@ func (sr *StudentRepository) List() []*entities.Student {
 	return memory.FindAll()
 }
 
-func (sr *StudentRepository) SearchByID(id uuid.UUID) (student *entities.Student) {
+func (sr *StudentRepository) SearchByID(id uuid.UUID) *entities.Student {
 	return memory.FindOne(id)
 }
 
