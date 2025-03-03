@@ -20,12 +20,11 @@ func NewStudentRepository() *StudentRepository {
 }
 
 func (sr *StudentRepository) List() []*entities.Student {
-	students := memory.StudentsMemory
-	return students
+	return memory.FindAll()
 }
 
 func (sr *StudentRepository) SearchByID(id uuid.UUID) (student *entities.Student, err error) {
-	students := memory.StudentsMemory
+	students := memory.FindAll()
 	for _, stdu := range students {
 		if stdu.ID == id {
 			student = stdu
