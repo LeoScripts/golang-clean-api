@@ -27,11 +27,11 @@ func FindOne(id uuid.UUID) (student *entities.Student) {
 	return student
 }
 
-func CreatMemory(student *entities.Student) {
+func Create(student *entities.Student) {
 	StudentsMemory = append(StudentsMemory, student)
 }
 
-func UpdateMemory(student *entities.Student) {
+func Update(student *entities.Student) {
 	var newStudents []*entities.Student
 
 	for _, stud := range StudentsMemory {
@@ -46,7 +46,7 @@ func UpdateMemory(student *entities.Student) {
 	StudentsMemory = newStudents
 }
 
-func DeleteMemory(id uuid.UUID) {
+func Delete(id uuid.UUID) {
 	var newStudents []*entities.Student
 	for _, stdu := range StudentsMemory {
 		if id != stdu.ID {

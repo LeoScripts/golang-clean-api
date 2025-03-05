@@ -26,13 +26,13 @@ func (sr *StudentRepository) SearchByID(id uuid.UUID) *entities.Student {
 }
 
 func (sr *StudentRepository) Create(student *entities.Student) {
-	memory.CreatMemory(student)
+	memory.Create(student)
 }
 
 func (sr *StudentRepository) Update(student *entities.Student) {
-	memory.UpdateMemory(student)
+	memory.Update(student)
 }
 
 func (sr *StudentRepository) Delete(id uuid.UUID) {
-	memory.DeleteMemory(id)
+	memory.Delete(id)
 }

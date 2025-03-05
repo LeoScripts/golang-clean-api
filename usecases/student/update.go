@@ -17,7 +17,7 @@ func (su *StudentUsecase) Update(id uuid.UUID, fullname string, age int) (studen
 		}
 	}
 	if student.ID == shared.GetUuidEmpty() {
-		return student, errors.New("id nao encotrado")
+		return student, errors.New("Estudante não encontrado")
 	}
 
 	student.FullName = fullname

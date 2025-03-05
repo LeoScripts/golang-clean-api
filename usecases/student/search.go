@@ -11,7 +11,7 @@ import (
 func (su *StudentUsecase) SearchById(id uuid.UUID) (student *entities.Student, err error) {
 	student = su.Database.StudentRepository.SearchByID(id)
 	if student.ID == shared.GetUuidEmpty() {
-		return student, errors.New("Estudante não encontrado aaaaaaaaaaa")
+		return student, errors.New("Estudante não encontrado")
 	}
 	return student, err
 }
