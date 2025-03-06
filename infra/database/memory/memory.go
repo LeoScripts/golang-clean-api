@@ -3,7 +3,7 @@
 package memory
 
 import (
-	"golang-student-01/entities"
+	"github.com/LeoScripts/golang-clean-api/entities"
 
 	"github.com/google/uuid"
 )

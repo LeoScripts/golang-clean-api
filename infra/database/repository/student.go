@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"golang-student-01/entities"
-	"golang-student-01/infra/database/memory"
+	"github.com/LeoScripts/golang-clean-api/entities"
+	"github.com/LeoScripts/golang-clean-api/infra/database/memory"
 
 	"github.com/google/uuid"
 )

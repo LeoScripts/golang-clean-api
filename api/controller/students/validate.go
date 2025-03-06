@@ -1,8 +1,8 @@
 package students
 
 import (
-	"golang-student-01/entities"
-	"golang-student-01/entities/shared"
+	"github.com/LeoScripts/golang-clean-api/entities"
+	"github.com/LeoScripts/golang-clean-api/entities/shared"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"

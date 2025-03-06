@@ -3,7 +3,7 @@ package student
 import (
 	"errors"
 
-	"golang-student-01/entities/shared"
+	"github.com/LeoScripts/golang-clean-api/entities/shared"
 
 	"github.com/google/uuid"
 )

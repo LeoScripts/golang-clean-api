@@ -1,7 +1,7 @@
 package student
 
 import (
-	"golang-student-01/infra/database"
+	"github.com/LeoScripts/golang-clean-api/infra/database"
 )
 
 type StudentUsecase struct {

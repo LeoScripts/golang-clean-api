@@ -1,21 +1,66 @@
-# Goland-students-01
+# Golang Clean API
 
-Projeto feito com intenção de aplicar e ter exemplos de formas de implentação
+API developed using good software development practices with the intention of making the concept of clean architecture visible.
 
-## ex 01
+With that in mind, I left the database in memory (to make it easier for users, especially beginners), simulating the flow of how it would be with a real database, whether PostgreSQL, MySQL, MongoDB, or any other you prefer, as the flow is quite similar.
 
-api com rotas de crud, search e index
+Treat this project as a laboratory where you can modify and play around with it, haha. I hope it is very useful in your development.
 
-[exemplo 01](./doc/ex-01.md)
+Other important points are:
 
-## ex 02 - usando o uuid
+- The folder structure is not the most common one for Golang, but I really liked it, haha.
+- Environment variables – I didn’t add them to simplify things (I have other projects with this configuration ready, and I’ll upload them here to GitHub soon).
+- [Air](https://github.com/air-verse/air) (automatically restarts the server after modifications) – I’ve already configured it if you want to use it.
+  - If you don’t have it installed, just run the command below in the terminal.
 
-emplementando o uuid no exemplo 01
+```bash
+go install github.com/air-verse/air@latest
+```
+```diff
+- Attention
 
-[exemplo 02](./doc/ex-02-uuid.md)
++ For security reasons, occasionally use the command "go run".
+```
 
-## ex 03 - aplicando o conceito de clean code (bem basico aqui)
+## Techs
 
- simplismente pra ter uma noçao
+* [Golang](https://go.dev/) - Programing Lenguage
+* [Gin](https://github.com/gin-gonic/gin) - Gin Web Framework
+* [Clean Arch](https://dev.to/booscaaa/implementando-clean-architecture-com-golang-4n0a) - Clean Architecture
+* [Solid](https://aprendagolang.com.br/o-que-e-solid/) - SOLID Principles
 
- [exemplo 03](doc/ex-03-clean_arch.md)
+## **Endpoints**
+
+- **GET** `/api/v1/heart` :  Route index
+- **GET** `/api/v1/students` : Get all students
+- **GET** `/api/v1/students/:id` : Get a student By ID
+- **POST** `/api/v1/students` : Create a new student
+- **PUT** `/api/v1/students/:id` : Update a student
+- **DELETE** `/api/v1/students/:id` : Remove a student
+
+## Running this project
+
+1 **Clone the repository**
+
+ ```bash
+ git clone https://github.com/LeoScripts/golang-clean-api
+ cd golang-clean-api
+```
+
+2 **Install dependencies**
+
+```bash
+go mod tidy
+```
+
+3 **Run the application**
+
+```bash
+go run main.go
+# or
+air
+```
+
+## Http Client collection
+
+Import the file `_other/Insomnia_2025-03-05.json` into your HTTP client (Insomnia, Postman, etc......)

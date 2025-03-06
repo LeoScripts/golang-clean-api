@@ -3,9 +3,9 @@ package students
 import (
 	"net/http"
 
-	"golang-student-01/api/controller"
-	"golang-student-01/entities"
-	"golang-student-01/usecases/student"
+	"github.com/LeoScripts/golang-clean-api/api/controller"
+	"github.com/LeoScripts/golang-clean-api/entities"
+	"github.com/LeoScripts/golang-clean-api/usecases/student"
 
 	"github.com/gin-gonic/gin"
 )

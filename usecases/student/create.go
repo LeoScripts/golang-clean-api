@@ -1,7 +1,7 @@
 package student
 
 import (
-	"golang-student-01/entities"
+	"github.com/LeoScripts/golang-clean-api/entities"
 )
 
 func (su *StudentUsecase) Create(fullName string, age int) (student *entities.Student, err error) {

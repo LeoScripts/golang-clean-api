@@ -1,10 +1,10 @@
 package main
 
 import (
-	"golang-student-01/api"
-	"golang-student-01/infra/database"
-	"golang-student-01/infra/database/memory"
-	"golang-student-01/infra/database/repository"
+	"github.com/LeoScripts/golang-clean-api/api"
+	"github.com/LeoScripts/golang-clean-api/infra/database"
+	"github.com/LeoScripts/golang-clean-api/infra/database/memory"
+	"github.com/LeoScripts/golang-clean-api/infra/database/repository"
 )
 
 func main() {

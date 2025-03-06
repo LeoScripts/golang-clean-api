@@ -3,7 +3,7 @@ package heart
 import (
 	"net/http"
 
-	"golang-student-01/api/controller"
+	"github.com/LeoScripts/golang-clean-api/api/controller"
 
 	"github.com/gin-gonic/gin"
 )

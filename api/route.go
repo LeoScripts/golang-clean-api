@@ -1,13 +1,13 @@
 package api
 
 import (
-	heart "golang-student-01/api/controller/infra"
+	heart "github.com/LeoScripts/golang-clean-api/api/controller/infra"
 )
 
 func (s *Service) GetRoutes() {
-	s.Engine.GET("/heart", heart.HeartController)
+	s.Engine.GET("/api/v1/heart", heart.HeartController)
 
-	groupStudents := s.Engine.Group("/students")
+	groupStudents := s.Engine.Group("/api/v1/students")
 	groupStudents.GET("/", s.StudentController.List)
 	groupStudents.POST("/", s.StudentController.Create)
 	groupStudents.PUT("/:id", s.StudentController.Update)

@@ -1,9 +1,9 @@
 package api
 
 import (
-	"golang-student-01/api/controller/students"
-	"golang-student-01/infra/database"
-	students_usecase "golang-student-01/usecases/student"
+	"github.com/LeoScripts/golang-clean-api/api/controller/students"
+	"github.com/LeoScripts/golang-clean-api/infra/database"
+	students_usecase "github.com/LeoScripts/golang-clean-api/usecases/student"
 
 	"github.com/gin-gonic/gin"
 )
