@@ -1,5 +1,23 @@
 # Golang Clean API
 
+<div align="center">
+<img src="https://github.com/LeoScripts/golang-clean-api/raw/main/.gitassets/go-clean-api.jpeg" width="350" />
+
+<div data-badges>
+    <img src="https://img.shields.io/github/stars/LeoScripts/golang-clean-api?style=for-the-badge" alt="GitHub stars" />
+    <img src="https://img.shields.io/github/forks/LeoScripts/golang-clean-api?style=for-the-badge" alt="GitHub forks" />
+    <img src="https://img.shields.io/github/issues/LeoScripts/golang-clean-api?style=for-the-badge" alt="GitHub issues" />
+</div>
+
+<div data-badges>
+    <img src="https://img.shields.io/badge/go-%2300ADD8.svg?style=for-the-badge&logo=go&logoColor=white">
+    <img src="https://img.shields.io/badge/gin-%23009639.svg?style=for-the-badge&logo=gin&logoColor=white">
+    <img src="https://img.shields.io/badge/Design%20Patterns-Software%20Architecture-blueviolet?style=for-the-badge">
+    <img src="https://img.shields.io/badge/SOLID-Principles-9cf?style=for-the-badge">
+
+</div>
+</div>
+
 API developed using good software development practices with the intention of making the concept of clean architecture visible.
 
 With that in mind, I left the database in memory (to make it easier for users, especially beginners), simulating the flow of how it would be with a real database, whether PostgreSQL, MySQL, MongoDB, or any other you prefer, as the flow is quite similar.
@@ -64,3 +82,4 @@ air
 ## Http Client collection
 
 Import the file `_other/Insomnia_2025-03-05.json` into your HTTP client (Insomnia, Postman, etc......)
+
